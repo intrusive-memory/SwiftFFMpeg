@@ -1,0 +1,104 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ffmpeg-7.0.3]
+  pull_request:
+    branches: [ffmpeg-7.0.3]
+
+jobs:
+  build:
+    name: Build SwiftFFMpeg
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Install FFmpeg 7.0
+        run: |
+          # Install FFmpeg via Homebrew
+          brew install ffmpeg
+
+      - name: Verify FFmpeg installation
+        run: |
+          ffmpeg -version
+          pkg-config --modversion libavformat
+
+      - name: Build package
+        run: swift build -v
+
+      - name: Run tests
+        run: |
+          set +e
+          swift test 2>&1 | tee test-output.log
+          TEST_EXIT_CODE=${PIPESTATUS[0]}
+          set -e
+
+          if grep -q "with [1-9][0-9]* failure" test-output.log; then
+            echo "Tests failed"
+            exit 1
+          elif grep -q "Test run with .* tests .* passed" test-output.log; then
+            echo "All tests passed"
+            exit 0
+          else
+            exit $TEST_EXIT_CODE
+          fi
+
+      - name: Archive build artifacts
+        if: success()
+        run: |
+          BUILD_PATH=$(swift build --show-bin-path)
+          mkdir -p artifacts
+
+          # Copy built products
+          if [ -d "$BUILD_PATH" ]; then
+            cp -R "$BUILD_PATH" artifacts/build
+          fi
+
+          # Create a build manifest
+          echo "Branch: ffmpeg-7.0.3" > artifacts/build-info.txt
+          echo "Commit: ${{ github.sha }}" >> artifacts/build-info.txt
+          echo "Date: $(date)" >> artifacts/build-info.txt
+          echo "Swift Version: $(swift --version)" >> artifacts/build-info.txt
+          echo "FFmpeg Version: $(pkg-config --modversion libavformat)" >> artifacts/build-info.txt
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: swiftffmpeg-build-ffmpeg-7.0.3
+          path: artifacts/
+          retention-days: 30
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-ffmpeg-7.0.3
+          path: test-output.log
+          retention-days: 30
+
+      - name: Build summary
+        if: always()
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ffmpeg-7.0.3" >> $GITHUB_STEP_SUMMARY
+          echo "**FFmpeg Version:** $(pkg-config --modversion libavformat)" >> $GITHUB_STEP_SUMMARY
+          echo "**Swift Version:** $(swift --version | head -n 1)" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f test-output.log ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+            LAST_EXECUTION_LINE=$(grep "Executed.*test" test-output.log | tail -n 1)
+            if [ -n "$LAST_EXECUTION_LINE" ]; then
+              echo "$LAST_EXECUTION_LINE" >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
