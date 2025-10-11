@@ -4,13 +4,15 @@
 
 A Swift wrapper for the FFmpeg API.
 
+**This branch targets FFmpeg 7.1.2** - See the [ffmpeg-7.1.2 release](https://github.com/intrusive-memory/ffmpeg-framework/releases/tag/ffmpeg-7.1.2) for the prebuilt XCFrameworks.
+
 > Note: SwiftFFmpeg is still in development, and the API is not guaranteed to be stable. It's subject to change without warning.
 
 ## Installation
 
 ### Prerequisites
 
-You need to install [FFmpeg](http://ffmpeg.org/) (Requires FFmpeg 8.0 or higher) before using this library. On macOS:
+You need to install [FFmpeg 7.1.2](http://ffmpeg.org/) before using this library. On macOS:
 
 ```bash
 brew install ffmpeg
