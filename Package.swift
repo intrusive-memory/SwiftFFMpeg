@@ -15,7 +15,7 @@ let package = Package(
               capability: .command(
                 intent: .custom(
                     verb: "download-ffmpeg-xcframeworks",
-                    description: "Download the latest stovak/ffmpeg-framework XCFramework artifact into the package."
+                    description: "Download the FFmpeg 7.0.3 XCFramework artifact from intrusive-memory/ffmpeg-framework into the package."
                     ),
                     permissions: [
                       .writeToPackageDirectory(reason: "Place the downloaded FFmpeg XCFrameworks under the xcframework/ directory.")
