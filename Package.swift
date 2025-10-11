@@ -32,15 +32,24 @@ let package = Package(
     ),
     .target(
       name: "SwiftFFmpeg",
-      dependencies: ["CFFmpeg"]
+      dependencies: ["CFFmpeg"],
+      swiftSettings: [
+        .swiftLanguageMode(.v5)
+      ]
     ),
     .executableTarget(
       name: "Examples",
-      dependencies: ["SwiftFFmpeg"]
+      dependencies: ["SwiftFFmpeg"],
+      swiftSettings: [
+        .swiftLanguageMode(.v5)
+      ]
     ),
     .testTarget(
       name: "Tests",
-      dependencies: ["SwiftFFmpeg"]
+      dependencies: ["SwiftFFmpeg"],
+      swiftSettings: [
+        .swiftLanguageMode(.v5)
+      ]
     ),
   ]
 )
