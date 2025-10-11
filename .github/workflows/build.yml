@@ -2,9 +2,9 @@ name: Build and Test
 
 on:
   push:
-    branches: [ffmpeg-7.0.3]
+    branches: [ffmpeg-8.0]
   pull_request:
-    branches: [ffmpeg-7.0.3]
+    branches: [ffmpeg-8.0]
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
       - name: Show Swift version
         run: swift --version
 
-      - name: Install FFmpeg 7.0
+      - name: Install FFmpeg 8.0
         run: |
           # Install FFmpeg via Homebrew
           brew install ffmpeg
@@ -63,7 +63,7 @@ jobs:
           fi
 
           # Create a build manifest
-          echo "Branch: ffmpeg-7.0.3" > artifacts/build-info.txt
+          echo "Branch: ffmpeg-8.0" > artifacts/build-info.txt
           echo "Commit: ${{ github.sha }}" >> artifacts/build-info.txt
           echo "Date: $(date)" >> artifacts/build-info.txt
           echo "Swift Version: $(swift --version)" >> artifacts/build-info.txt
@@ -73,7 +73,7 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: swiftffmpeg-build-ffmpeg-7.0.3
+          name: swiftffmpeg-build-ffmpeg-8.0
           path: artifacts/
           retention-days: 30
 
@@ -81,7 +81,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-ffmpeg-7.0.3
+          name: test-results-ffmpeg-8.0
           path: test-output.log
           retention-days: 30
 
@@ -90,7 +90,7 @@ jobs:
         run: |
           echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch:** ffmpeg-7.0.3" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ffmpeg-8.0" >> $GITHUB_STEP_SUMMARY
           echo "**FFmpeg Version:** $(pkg-config --modversion libavformat)" >> $GITHUB_STEP_SUMMARY
           echo "**Swift Version:** $(swift --version | head -n 1)" >> $GITHUB_STEP_SUMMARY
 
