@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Download the latest FFmpeg XCFramework bundle from stovak/ffmpeg-framework.
+"""Download the latest FFmpeg XCFramework bundle from intrusive-memory/ffmpeg-framework.
 
 The script locates the newest tagged release in the upstream
-`stovak/ffmpeg-framework` repository, finds the GitHub Actions artifact that
+`intrusive-memory/ffmpeg-framework` repository, finds the GitHub Actions artifact that
 contains the prebuilt XCFrameworks, downloads the archive, and extracts every
 `.xcframework` directory into `xcframework/` inside the Swift package.
 
@@ -34,7 +34,7 @@ from typing import Dict, List, Optional
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-OWNER = os.environ.get("FFMPEG_FRAMEWORK_OWNER", "stovak")
+OWNER = os.environ.get("FFMPEG_FRAMEWORK_OWNER", "intrusive-memory")
 REPO = os.environ.get("FFMPEG_FRAMEWORK_REPO", "ffmpeg-framework")
 ARTIFACT_NAME = os.environ.get("FFMPEG_FRAMEWORK_ARTIFACT", "ffmpeg-xcframeworks")
 TOKEN = os.environ.get("FFMPEG_FRAMEWORK_TOKEN") or os.environ.get("GITHUB_TOKEN")
