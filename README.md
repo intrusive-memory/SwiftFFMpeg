@@ -1,6 +1,6 @@
 # SwiftFFmpeg
 
-![Tests](https://github.com/intrusive-memory/SwiftFFMpeg/actions/workflows/tests.yml/badge.svg)
+![Build](https://github.com/intrusive-memory/SwiftFFMpeg/actions/workflows/build.yml/badge.svg?branch=ffmpeg-7.0.3)
 
 A Swift wrapper for the FFmpeg API.
 
