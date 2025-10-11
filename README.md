@@ -1,6 +1,6 @@
 # SwiftFFmpeg
 
-![Tests](https://github.com/stovak/SwiftFFMpeg/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/intrusive-memory/SwiftFFMpeg/actions/workflows/tests.yml/badge.svg)
 
 A Swift wrapper for the FFmpeg API.
 
@@ -24,7 +24,7 @@ To depend on SwiftFFmpeg in your own project, add a `dependencies` clause to you
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/stovak/SwiftFFmpeg.git", from: "1.0.1")
+    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", from: "1.0.1")
 ]
 ```
 
