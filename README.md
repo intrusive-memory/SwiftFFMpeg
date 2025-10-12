@@ -6,25 +6,57 @@ A Swift wrapper for the FFmpeg API.
 
 > Note: SwiftFFmpeg is still in development, and the API is not guaranteed to be stable. It's subject to change without warning.
 
+## Version Branches and Tags
+
+SwiftFFmpeg maintains separate branches for different FFmpeg versions. Each branch is tagged with the corresponding FFmpeg version number:
+
+- **8.0** - FFmpeg 8.0 (branch: `ffmpeg-8.0`)
+- **7.1.2** - FFmpeg 7.1.2 (branch: `ffmpeg-7.1.2`)
+- **7.0.3** - FFmpeg 7.0.3 (branch: `ffmpeg-7.0.3`)
+
+Each version branch includes:
+- Version-specific configuration and documentation
+- Full CI/CD pipeline with automated testing
+- Build artifacts for verified working releases
+
+See the [releases page](https://github.com/intrusive-memory/SwiftFFMpeg/releases) for detailed release notes.
+
 ## Installation
 
 ### Prerequisites
 
-You need to install [FFmpeg](http://ffmpeg.org/) (Requires FFmpeg 8.0 or higher) before using this library. On macOS:
+You need to install [FFmpeg](http://ffmpeg.org/) before using this library. On macOS:
 
 ```bash
 brew install ffmpeg
 ```
 
+**Important:** Make sure the FFmpeg version you install matches the SwiftFFmpeg version you're using.
+
 ### Swift Package Manager
 
 SwiftFFmpeg uses [SwiftPM](https://swift.org/package-manager/) as its build tool and links against the FFmpeg libraries provided by your system installation.
 
-To depend on SwiftFFmpeg in your own project, add a `dependencies` clause to your `Package.swift`:
+To depend on SwiftFFmpeg in your own project, add a `dependencies` clause to your `Package.swift`. Choose the version that matches your FFmpeg installation:
 
+#### For FFmpeg 8.0:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", from: "1.0.1")
+    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", exact: "8.0")
+]
+```
+
+#### For FFmpeg 7.1.2:
+```swift
+dependencies: [
+    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", exact: "7.1.2")
+]
+```
+
+#### For FFmpeg 7.0.3:
+```swift
+dependencies: [
+    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", exact: "7.0.3")
 ]
 ```
 
