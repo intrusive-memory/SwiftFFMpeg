@@ -1,10 +1,13 @@
 # SwiftFFmpeg
 
 ![Tests](https://github.com/intrusive-memory/SwiftFFMpeg/actions/workflows/tests.yml/badge.svg)
+![Experimental](https://img.shields.io/badge/status-experimental-yellow.svg)
 
 A Swift wrapper for the FFmpeg API.
 
-> Note: SwiftFFmpeg is still in development, and the API is not guaranteed to be stable. It's subject to change without warning.
+> **⚠️ EXPERIMENTAL - NOT READY FOR PRODUCTION**
+>
+> This library is experimental and incomplete. It is being developed as a learning exercise and proof of concept. The API is unstable and subject to change without warning. Features may be missing, incomplete, or non-functional. **Do not use this library in production environments.**
 
 ## Version Branches and Tags
 

@@ -1,0 +1,80 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, development]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: macOS Tests
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Show Swift version
+        run: swift --version
+
+      - name: Install FFmpeg
+        run: brew install ffmpeg
+
+      - name: Verify FFmpeg installation
+        run: |
+          ffmpeg -version
+          pkg-config --modversion libavformat
+
+      - name: Build for macOS
+        run: |
+          echo "🔨 Building for macOS (arm64)"
+          swift build
+
+      - name: Run tests on macOS
+        run: |
+          set +e
+
+          echo "🧪 Running tests on macOS"
+
+          # Run tests with swift test
+          swift test 2>&1 | tee test_output.txt
+          TEST_EXIT_CODE=${PIPESTATUS[0]}
+
+          # Check if tests passed
+          if [ $TEST_EXIT_CODE -eq 0 ]; then
+            echo "✅ All tests passed"
+            exit 0
+          else
+            echo "❌ Tests failed"
+            cat test_output.txt
+            exit $TEST_EXIT_CODE
+          fi
+
+  lint:
+    name: Code Quality
+    runs-on: macos-26
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for TODOs in committed code
+        run: |
+          if git diff origin/main...HEAD | grep -E "^\+.*TODO|^\+.*FIXME"; then
+            echo "⚠️  Warning: New TODOs or FIXMEs detected"
+          fi
+
+      - name: Check file sizes
+        run: |
+          find Sources -type f -name "*.swift" -size +100k -exec echo "⚠️  Large file: {}" \;
+
+      - name: Check for print statements
+        run: |
+          if grep -r "print(" Sources/ --include="*.swift" | grep -v "// print"; then
+            echo "⚠️  Warning: print() statements found in source code"
+          fi
