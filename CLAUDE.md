@@ -2,7 +2,7 @@
 
 SwiftFFmpeg is a Swift wrapper for the FFmpeg API for audio/video processing.
 
-**Status**: Experimental | **Platform**: macOS 26.0+ | **Swift**: 6.2+
+**Version**: 8.0.1 | **FFmpeg**: 8.0 | **Platform**: macOS 26.0+ | **Swift**: 6.2+
 
 ## Build
 

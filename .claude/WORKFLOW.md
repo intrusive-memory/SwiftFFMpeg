@@ -137,7 +137,7 @@ After successful merge:
 
    ## Installation
    ```swift
-   .package(url: "https://github.com/stovak/SwiftFFMpeg.git", from: "<VERSION>")
+   .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", from: "<VERSION>")
    ```
 
    🤖 Generated with [Claude Code](https://claude.com/claude-code)
