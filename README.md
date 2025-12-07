@@ -131,3 +131,7 @@ while let _ = try? fmtCtx.readFrame(into: pkt) {
 
 print("Done.")
 ```
+
+## License
+
+This project is licensed under the [GNU Lesser General Public License v2.1](LICENSE), the same license used by FFmpeg.
