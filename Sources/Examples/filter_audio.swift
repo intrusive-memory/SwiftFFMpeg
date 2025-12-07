@@ -14,19 +14,22 @@ import Darwin
 import Glibc
 #endif
 
-private let sampleRate = 48000
-private nonisolated(unsafe) let sampleFormat = AVSampleFormat.floatPlanar
-private nonisolated(unsafe) let channelLayout = AVChannelLayout5Point0
-private let frameSize = 1024
+/// Audio configuration for the filter example
+private enum AudioConfig {
+  static let sampleRate = 48000
+  static nonisolated(unsafe) let sampleFormat = AVSampleFormat.floatPlanar
+  static nonisolated(unsafe) let channelLayout = AVChannelLayout5Point0
+  static let frameSize = 1024
+}
 
 /// Construct a frame of audio data to be filtered; this simple example just synthesizes a sine wave.
 private func get_input(frame: AVFrame, index: Int) throws {
   // Set up the frame properties and allocate the buffer for the data.
-  frame.sampleRate = sampleRate
-  frame.sampleFormat = sampleFormat
-  frame.channelLayout = channelLayout
-  frame.sampleCount = frameSize
-  frame.pts = Int64(index * frameSize)
+  frame.sampleRate = AudioConfig.sampleRate
+  frame.sampleFormat = AudioConfig.sampleFormat
+  frame.channelLayout = AudioConfig.channelLayout
+  frame.sampleCount = AudioConfig.frameSize
+  frame.pts = Int64(index * AudioConfig.frameSize)
 
   try frame.allocBuffer()
 
@@ -35,7 +38,7 @@ private func get_input(frame: AVFrame, index: Int) throws {
     let data = UnsafeMutableRawPointer(frame.extendedData[0]!).bindMemory(
       to: CFloat.self, capacity: frame.sampleCount)
     for j in 0..<frame.sampleCount {
-      data[j] = sin(2 * Float.pi * Float(index + j) * Float(i + 1) / Float(frameSize))
+      data[j] = sin(2 * Float.pi * Float(index + j) * Float(i + 1) / Float(AudioConfig.frameSize))
     }
   }
 }
@@ -74,7 +77,7 @@ func filter_audio() throws {
   guard let duration = Int(CommandLine.arguments[2]), duration > 0 else {
     fatalError("Invalid duration: \(CommandLine.arguments[2])")
   }
-  let frameCount = duration * sampleRate / frameSize
+  let frameCount = duration * AudioConfig.sampleRate / AudioConfig.frameSize
 
   // Set up the filtergraph.
 
@@ -86,10 +89,10 @@ func filter_audio() throws {
   let abuffer = AVFilter(name: "abuffer")!
   let abufferCtx = AVFilterContext(graph: filterGraph, filter: abuffer, name: "src")
   // Set the filter options through the AVOptions API.
-  try abufferCtx.set(channelLayout.description, forKey: "channel_layout")
-  try abufferCtx.set(sampleFormat.name!, forKey: "sample_fmt")
-  try abufferCtx.set(AVRational(num: 1, den: Int32(sampleRate)), forKey: "time_base")
-  try abufferCtx.set(sampleRate, forKey: "sample_rate")
+  try abufferCtx.set(AudioConfig.channelLayout.description, forKey: "channel_layout")
+  try abufferCtx.set(AudioConfig.sampleFormat.name!, forKey: "sample_fmt")
+  try abufferCtx.set(AVRational(num: 1, den: Int32(AudioConfig.sampleRate)), forKey: "time_base")
+  try abufferCtx.set(AudioConfig.sampleRate, forKey: "sample_rate")
   // Now initialize the filter; we pass NULL options, since we have already set all the options above.
   try abufferCtx.initialize()
 
