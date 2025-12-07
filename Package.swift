@@ -1,4 +1,5 @@
 // swift-tools-version:6.2
+// SPDX-License-Identifier: LGPL-2.1-or-later
 import PackageDescription
 
 let package = Package(

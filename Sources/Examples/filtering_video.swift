@@ -13,9 +13,7 @@ import Darwin
 import Glibc
 #endif
 
-private var lastPts = AVTimestamp.noPTS
-
-private func display_frame(frame: AVFrame, timebase: AVRational) throws {
+private func display_frame(frame: AVFrame, timebase: AVRational, lastPts: inout Int64) throws {
   var delay = 0 as Int64
   if frame.pts != AVTimestamp.noPTS {
     if lastPts != AVTimestamp.noPTS {
@@ -107,6 +105,7 @@ func filtering_video() throws {
   let pkt = AVPacket()
   let frame = AVFrame()
   let filterFrame = AVFrame()
+  var lastPts = AVTimestamp.noPTS
 
   // read all packets
   while let _ = try? fmtCtx.readFrame(into: pkt) {
@@ -137,7 +136,7 @@ func filtering_video() throws {
         } catch let err as AVError where err == .tryAgain || err == .eof {
           break
         }
-        try display_frame(frame: filterFrame, timebase: buffersinkCtx.inputs[0].timebase)
+        try display_frame(frame: filterFrame, timebase: buffersinkCtx.inputs[0].timebase, lastPts: &lastPts)
         filterFrame.unref()
       }
       frame.unref()

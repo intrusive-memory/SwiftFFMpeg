@@ -11,7 +11,7 @@ import CFFmpeg
 
 typealias CAVOption = CFFmpeg.AVOption
 
-public struct AVOption {
+public struct AVOption: @unchecked Sendable {
   public var name: String
   /// The short English help text about the option.
   public var help: String?
@@ -85,7 +85,7 @@ extension AVOption: CustomStringConvertible {
 
 extension AVOption {
   // https://github.com/FFmpeg/FFmpeg/blob/master/libavutil/opt.h#L221
-  public enum Kind: UInt32 {
+  public enum Kind: UInt32, Sendable {
     case flags
     case int
     case int64
@@ -154,7 +154,7 @@ extension AVOption.Kind: CustomStringConvertible {
 
 extension AVOption {
   // https://github.com/FFmpeg/FFmpeg/blob/master/libavutil/opt.h#L221
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// A generic parameter which can be set by the user for muxing or encoding.
     public static let encoding = Flag(rawValue: AV_OPT_FLAG_ENCODING_PARAM)
     /// A generic parameter which can be set by the user for demuxing or decoding.
@@ -204,7 +204,7 @@ extension AVOption.Flag: CustomStringConvertible {
 
 extension AVOption {
   // https://github.com/FFmpeg/FFmpeg/blob/master/libavutil/opt.h#L556
-  public struct SearchFlag: OptionSet {
+  public struct SearchFlag: OptionSet, Sendable {
     /// Search in possible children of the given object first.
     public static let children = SearchFlag(rawValue: 1 << 0)
     /// The obj passed to `av_opt_find()` is fake – only a double pointer to `AVClass`

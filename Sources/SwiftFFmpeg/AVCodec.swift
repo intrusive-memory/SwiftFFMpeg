@@ -295,7 +295,7 @@ public struct AVCodec {
 
 extension AVCodec {
   /// Codec capabilities
-  public struct Cap: OptionSet {
+  public struct Cap: OptionSet, Sendable {
     /// Decoder can use draw_horiz_band callback.
     public static let drawHorizBand = Cap(rawValue: UInt32(AV_CODEC_CAP_DRAW_HORIZ_BAND))
     /// Codec uses get_buffer() for allocating buffers and supports custom allocators.

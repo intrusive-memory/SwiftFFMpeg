@@ -162,7 +162,7 @@ public final class AVPacket {
 // MARK: - AVPacket.Flag
 
 extension AVPacket {
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// The packet contains a keyframe.
     public static let key = Flag(rawValue: AV_PKT_FLAG_KEY)
     /// The packet content is corrupted.

@@ -126,7 +126,7 @@ public final class SwsContext {
 
 extension SwsContext {
   ///
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// Select fast bilinear scaling algorithm.
     public static let fastBilinear = Flag(rawValue: Int32(SWS_FAST_BILINEAR.rawValue))
     /// Select bilinear scaling algorithm.
@@ -203,7 +203,7 @@ extension SwsContext: AVClassSupport, AVOptionSupport {
   }
 }
 
-public struct SWSColorspace {
+public struct SWSColorspace: Sendable {
   public static let ITU709 = SWSColorspace(rawValue: SWS_CS_ITU709)
   public static let FCC = SWSColorspace(rawValue: SWS_CS_FCC)
   public static let ITU601 = SWSColorspace(rawValue: SWS_CS_ITU601)
@@ -221,7 +221,7 @@ public struct SWSColorspace {
   public init(rawValue: Int32) { self.rawValue = rawValue }
 }
 
-public struct SWSColorRange {
+public struct SWSColorRange: Sendable {
   /// legal range
   public static let MPEG = SWSColorRange(rawValue: 0)
 

@@ -11,7 +11,7 @@ import XCTest
 
 final class AVFrameTests: XCTestCase {
 
-  static var allTests = [
+  static let allTests = [
     ("testAlloc", testAlloc),
     ("testRef", testRef),
     ("testUnref", testUnref),

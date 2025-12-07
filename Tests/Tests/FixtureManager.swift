@@ -13,9 +13,18 @@ public struct FixtureManager {
 
   /// The root directory containing all fixtures.
   public static var fixturesDirectory: URL {
-    let currentFile = URL(fileURLWithPath: #file)
-    let testsDirectory = currentFile.deletingLastPathComponent().deletingLastPathComponent()
-    let projectRoot = testsDirectory.deletingLastPathComponent()
+    // First, try environment variable for CI
+    if let envPath = ProcessInfo.processInfo.environment["SWIFTFFMPEG_FIXTURES_PATH"] {
+      return URL(fileURLWithPath: envPath)
+    }
+
+    // Path: Tests/Tests/FixtureManager.swift
+    // Go up: FixtureManager.swift -> Tests -> Tests -> SwiftFFMpeg (project root)
+    let currentFile = URL(fileURLWithPath: #filePath)
+    let projectRoot = currentFile
+      .deletingLastPathComponent()  // Tests/Tests/
+      .deletingLastPathComponent()  // Tests/
+      .deletingLastPathComponent()  // SwiftFFMpeg/
     return projectRoot.appendingPathComponent("Fixtures")
   }
 
@@ -149,17 +158,15 @@ public struct FixtureManager {
 
   /// Verify that the fixtures directory exists and contains files.
   ///
-  /// - Throws: XCTFail if fixtures are not available.
+  /// - Throws: XCTSkip if fixtures are not available.
   public static func verifyFixturesExist() throws {
     let fixturesExist = FileManager.default.fileExists(atPath: fixturesDirectory.path)
     guard fixturesExist else {
-      XCTFail("Fixtures directory not found at: \(fixturesDirectory.path)")
-      return
+      throw XCTSkip("Fixtures directory not found at: \(fixturesDirectory.path)")
     }
 
     guard !allFixtures.isEmpty else {
-      XCTFail("No fixtures found in directory: \(fixturesDirectory.path)")
-      return
+      throw XCTSkip("No fixtures found in directory: \(fixturesDirectory.path)")
     }
   }
 

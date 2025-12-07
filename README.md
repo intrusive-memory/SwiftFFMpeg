@@ -9,18 +9,11 @@ A Swift wrapper for the FFmpeg API.
 >
 > This library is experimental and incomplete. It is being developed as a learning exercise and proof of concept. The API is unstable and subject to change without warning. Features may be missing, incomplete, or non-functional. **Do not use this library in production environments.**
 
-## Version Branches and Tags
+## Version
 
-SwiftFFmpeg maintains separate branches for different FFmpeg versions. Each branch is tagged with the corresponding FFmpeg version number:
+**Current Version**: 8.0.1
 
-- **8.0** - FFmpeg 8.0 (branch: `ffmpeg-8.0`)
-- **7.1.2** - FFmpeg 7.1.2 (branch: `ffmpeg-7.1.2`)
-- **7.0.3** - FFmpeg 7.0.3 (branch: `ffmpeg-7.0.3`)
-
-Each version branch includes:
-- Version-specific configuration and documentation
-- Full CI/CD pipeline with automated testing
-- Build artifacts for verified working releases
+This version is compatible with **FFmpeg 8.0** installed via Homebrew.
 
 See the [releases page](https://github.com/intrusive-memory/SwiftFFMpeg/releases) for detailed release notes.
 
@@ -34,36 +27,28 @@ You need to install [FFmpeg](http://ffmpeg.org/) before using this library. On m
 brew install ffmpeg
 ```
 
-**Important:** Make sure the FFmpeg version you install matches the SwiftFFmpeg version you're using.
-
 ### Swift Package Manager
 
 SwiftFFmpeg uses [SwiftPM](https://swift.org/package-manager/) as its build tool and links against the FFmpeg libraries provided by your system installation.
 
-To depend on SwiftFFmpeg in your own project, add a `dependencies` clause to your `Package.swift`. Choose the version that matches your FFmpeg installation:
+Add SwiftFFmpeg to your `Package.swift`:
 
-#### For FFmpeg 8.0:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", exact: "8.0")
+    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", from: "8.0.1")
 ]
 ```
 
-#### For FFmpeg 7.1.2:
+Then add `SwiftFFmpeg` to your target's dependencies:
+
 ```swift
-dependencies: [
-    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", exact: "7.1.2")
-]
+.target(
+    name: "YourTarget",
+    dependencies: ["SwiftFFmpeg"]
+)
 ```
 
-#### For FFmpeg 7.0.3:
-```swift
-dependencies: [
-    .package(url: "https://github.com/intrusive-memory/SwiftFFmpeg.git", exact: "7.0.3")
-]
-```
-
-SwiftPM will automatically discover the system libraries via `pkg-config`. Make sure your environment can locate FFmpeg's `.pc` files (Homebrew handles this automatically).
+SwiftPM will automatically discover the system libraries via `pkg-config`. Homebrew handles this automatically.
 
 ## Documentation
 
@@ -131,3 +116,7 @@ while let _ = try? fmtCtx.readFrame(into: pkt) {
 
 print("Done.")
 ```
+
+## License
+
+This project is licensed under the [GNU Lesser General Public License v2.1](LICENSE), the same license used by FFmpeg.

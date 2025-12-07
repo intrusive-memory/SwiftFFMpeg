@@ -351,7 +351,7 @@ extension AVIOContext {
   /// URL open modes
   ///
   /// The flags argument to avio_open must be one of the following constants, optionally ORed with other flags.
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// read-only
     public static let read = Flag(rawValue: AVIO_FLAG_READ)
     /// write-only
@@ -399,7 +399,7 @@ extension AVIOContext.Flag: CustomStringConvertible {
 // MARK: - AVIOContext.SeekWhence
 
 extension AVIOContext {
-  public struct SeekWhence {
+  public struct SeekWhence: Sendable {
     /// ORing this as the "whence" parameter to a seek function causes it to
     /// return the filesize without seeking anywhere. Supporting this is optional.
     /// If it is not supported then the seek function will return <0.
