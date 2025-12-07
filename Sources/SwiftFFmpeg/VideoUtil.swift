@@ -130,7 +130,7 @@ public struct AVPixelFormatDescriptor {
   }
 }
 
-public struct AVPixelFormatFlags: OptionSet {
+public struct AVPixelFormatFlags: OptionSet, Sendable {
   public let rawValue: UInt64
 
   public init(rawValue: UInt64) {

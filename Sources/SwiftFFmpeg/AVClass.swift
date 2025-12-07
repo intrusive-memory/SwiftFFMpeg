@@ -11,7 +11,7 @@ import CFFmpeg
 
 typealias CAVClass = CFFmpeg.AVClass
 
-public struct AVClass {
+public struct AVClass: Sendable {
   /// The name of the class.
   public var name: String
   /// The options of the class.
@@ -33,7 +33,7 @@ public struct AVClass {
 
 extension AVClass {
   // https://github.com/FFmpeg/FFmpeg/blob/master/libavutil/log.h#L48
-  public enum Category: UInt32 {
+  public enum Category: UInt32, Sendable {
     case na
     case input
     case output

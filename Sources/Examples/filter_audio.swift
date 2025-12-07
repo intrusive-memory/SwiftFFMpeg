@@ -15,8 +15,8 @@ import Glibc
 #endif
 
 private let sampleRate = 48000
-private let sampleFormat = AVSampleFormat.floatPlanar
-private let channelLayout = AVChannelLayout5Point0
+private nonisolated(unsafe) let sampleFormat = AVSampleFormat.floatPlanar
+private nonisolated(unsafe) let channelLayout = AVChannelLayout5Point0
 private let frameSize = 1024
 
 /// Construct a frame of audio data to be filtered; this simple example just synthesizes a sine wave.

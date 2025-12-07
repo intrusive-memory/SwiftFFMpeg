@@ -72,7 +72,7 @@ public struct AVInputFormat {
 // MARK: - AVInputFormat.Flag
 
 extension AVInputFormat {
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// Demuxer will use avio_open, no opened file should be provided by the caller.
     public static let noFile = Flag(rawValue: AVFMT_NOFILE)
     /// Needs '%d' in filename.
@@ -215,7 +215,7 @@ public struct AVOutputFormat {
 
 extension AVOutputFormat {
   /// Flags used by `flags`.
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// Muxer will use avio_open, no opened file should be provided by the caller.
     public static let noFile = Flag(rawValue: AVFMT_NOFILE)
     /// Needs '%d' in filename.

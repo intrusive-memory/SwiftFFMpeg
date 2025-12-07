@@ -347,7 +347,7 @@ extension AVCodecContext {
   /// Encoding support
   ///
   /// These flags can be passed in `AVCodecContext.flags` before initialization.
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// Allow decoders to produce frames with data planes that are not aligned
     /// to CPU requirements (e.g. due to cropping).
     public static let unaligned = Flag(rawValue: UInt32(AV_CODEC_FLAG_UNALIGNED))
@@ -423,7 +423,7 @@ extension AVCodecContext {
   /// Encoding support
   ///
   /// These flags can be passed in `AVCodecContext.flags2` before initialization.
-  public struct Flag2: OptionSet {
+  public struct Flag2: OptionSet, Sendable {
     /// Allow non spec compliant speedup tricks.
     public static let fast = Flag2(rawValue: AV_CODEC_FLAG2_FAST)
     /// Skip bitstream encoding.
@@ -695,7 +695,7 @@ extension AVCodecContext: AVClassSupport, AVOptionSupport {
   }
 }
 
-public struct FFThreadType: Equatable, OptionSet {
+public struct FFThreadType: Equatable, OptionSet, Sendable {
   /// Decode more than one frame at once
   public static let frame = FFThreadType(rawValue: FF_THREAD_FRAME)
   /// Decode more than one part of a single frame at once

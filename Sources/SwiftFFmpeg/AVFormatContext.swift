@@ -202,7 +202,7 @@ public final class AVFormatContext {
 
 // MARK: - AVDurationEstimationMethod
 
-public struct AVDurationEstimationMethod: Equatable {
+public struct AVDurationEstimationMethod: Equatable, Sendable {
   /// Duration accurately estimated from PTSes
   public static let fromPTS = AVDurationEstimationMethod(rawValue: AVFMT_DURATION_FROM_PTS)
 
@@ -220,7 +220,7 @@ public struct AVDurationEstimationMethod: Equatable {
 
 extension AVFormatContext {
   /// Flags used to modify the (de)muxer behaviour.
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// Generate missing pts even if it requires parsing future frames.
     public static let genPTS = Flag(rawValue: AVFMT_FLAG_GENPTS)
     /// Ignore index.
@@ -477,7 +477,7 @@ extension AVFormatContext {
 // MARK: - AVFormatContext.SeekFlag
 
 extension AVFormatContext {
-  public struct SeekFlag: OptionSet {
+  public struct SeekFlag: OptionSet, Sendable {
     /// seek backward
     public static let backward = SeekFlag(rawValue: AVSEEK_FLAG_BACKWARD)
     /// seeking based on position in bytes

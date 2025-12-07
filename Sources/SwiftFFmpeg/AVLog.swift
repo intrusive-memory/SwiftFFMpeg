@@ -39,7 +39,7 @@ public enum AVLog {
 
 extension AVLog {
   /// Log level
-  public struct Level: OptionSet {
+  public struct Level: OptionSet, Sendable {
     /// Print no output.
     public static let quiet = Level(rawValue: AV_LOG_QUIET)
     // Something went really wrong and we will crash now.

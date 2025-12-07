@@ -424,7 +424,7 @@ extension AVFrame {
 // MARK: - AVFrame.Flag
 
 extension AVFrame {
-  public struct Flag: OptionSet {
+  public struct Flag: OptionSet, Sendable {
     /// The frame data may be corrupted, e.g. due to decoding errors.
     public static let corrupt = Flag(rawValue: AV_FRAME_FLAG_CORRUPT)
     /// A flag to mark frames that are keyframes.

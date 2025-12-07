@@ -115,7 +115,7 @@ public struct AVCodecHWConfig {
 
 extension AVCodecHWConfig {
   /// Flags used by `methods`.
-  public struct Method: OptionSet {
+  public struct Method: OptionSet, Sendable {
     /// The codec supports this format via the `AVCodecContext.hwDeviceContext` interface.
     ///
     /// When selecting this format, `AVCodecContext.hwDeviceContext` should

@@ -13,7 +13,7 @@ import Darwin
 import Glibc
 #endif
 
-private var lastPts = AVTimestamp.noPTS
+private nonisolated(unsafe) var lastPts = AVTimestamp.noPTS
 
 private func display_frame(frame: AVFrame, timebase: AVRational) throws {
   var delay = 0 as Int64
