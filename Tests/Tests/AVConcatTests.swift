@@ -10,7 +10,7 @@ import XCTest
 
 final class AVConcatTests: XCTestCase {
 
-  static var allTests = [
+  static let allTests = [
     ("testConcatMultipleFixtures", testConcatMultipleFixtures),
     ("testConcatWithNarratorFixtures", testConcatWithNarratorFixtures),
   ]

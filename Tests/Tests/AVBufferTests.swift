@@ -11,7 +11,7 @@ import XCTest
 
 final class AVBufferTests: XCTestCase {
 
-  static var allTests = [
+  static let allTests = [
     ("test", test)
   ]
 

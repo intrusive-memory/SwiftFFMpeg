@@ -11,7 +11,7 @@ import XCTest
 
 final class AVImageTests: XCTestCase {
 
-  static var allTests = [
+  static let allTests = [
     ("testBuf", testBuf),
     ("testLinesizes", testLinesizes),
     ("testTotalSize", testTotalSize),
