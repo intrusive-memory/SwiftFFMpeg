@@ -1,127 +1,44 @@
 # CLAUDE.md
 
-SwiftFFmpeg is a Swift wrapper for the FFmpeg API for audio/video processing.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+For detailed project documentation, architecture, and development guidelines, see **[AGENTS.md](AGENTS.md)**.
+
+## Quick Reference
+
+**Project**: SwiftFFMpeg - Swift wrapper for FFmpeg API for audio/video processing
 
 **Version**: 8.0.1 | **FFmpeg**: 8.0 | **Platform**: macOS 26.0+ | **Swift**: 6.2+
 
-## Build
+**Status**: Experimental - not production-ready
 
+**Key Components**:
+- Format I/O: `AVFormatContext`, `AVIO`, `AVStream`
+- Codecs: `AVCodec`, `AVCodecContext`, `AVCodecParameters`
+- Frames/Packets: `AVFrame`, `AVPacket` (manual memory management via `unref()`)
+- Audio: `SwrContext` (resampling), `AVSampleFormat`, filters
+- Video: `SwsContext` (scaling), `AVPixelFormat`, filters
+- Filtering: `AVFilter` (audio/video filter graphs)
+
+**Important Notes**:
+- ONLY supports macOS 26.0+ (NEVER add code for older platforms)
+- MUST use `xcodebuild` for building, NOT `swift build`
+- ALWAYS call `unref()` on packets and frames after use (manual memory management)
+- Requires FFmpeg 8.0 installed via Homebrew (`brew install ffmpeg`)
+- Not thread-safe by default - synchronize access manually
+- See [AGENTS.md](AGENTS.md) for complete workflow, patterns, and extended documentation
+
+**Memory Management Pattern**:
+```swift
+let pkt = AVPacket()
+defer { pkt.unref() }  // Always cleanup
+
+let frame = AVFrame()
+defer { frame.unref() }  // Always cleanup
+```
+
+**Build Commands**:
 ```bash
-brew install ffmpeg    # Install FFmpeg
-swift build            # Build
-swift test             # Test
+xcodebuild -scheme SwiftFFmpeg -destination 'platform=macOS,arch=arm64' build
+xcodebuild -scheme SwiftFFmpeg -destination 'platform=macOS,arch=arm64' test
 ```
-
-## Memory Management
-
-**CRITICAL**: Always `unref()` packets and frames after use:
-
-```swift
-let pkt = AVPacket()
-defer { pkt.unref() }
-
-let frame = AVFrame()
-defer { frame.unref() }
-```
-
-## Core Usage Patterns
-
-### Read Media File
-
-```swift
-import SwiftFFmpeg
-
-let fmtCtx = try AVFormatContext(url: "input.mp4")
-try fmtCtx.findStreamInfo()
-
-guard let stream = fmtCtx.audioStream else { fatalError("No audio") }
-```
-
-### Decode Frames
-
-```swift
-let codec = AVCodec.findDecoderById(stream.codecParameters.codecId)!
-let codecCtx = AVCodecContext(codec: codec)
-try codecCtx.setParameters(stream.codecParameters)
-try codecCtx.openCodec()
-
-let pkt = AVPacket()
-let frame = AVFrame()
-
-while let _ = try? fmtCtx.readFrame(into: pkt) {
-    defer { pkt.unref() }
-    if pkt.streamIndex != stream.index { continue }
-
-    try codecCtx.sendPacket(pkt)
-    while true {
-        do {
-            try codecCtx.receiveFrame(frame)
-            // Process frame
-            frame.unref()
-        } catch let err as AVError where err == .tryAgain || err == .eof {
-            break
-        }
-    }
-}
-```
-
-### Resample Audio
-
-```swift
-let resampler = try SwrContext(
-    inputChannelLayout: AVChannelLayoutStereo,
-    inputSampleFormat: .floatPlanar,
-    inputSampleRate: 48000,
-    outputChannelLayout: AVChannelLayoutMono,
-    outputSampleFormat: .int16,
-    outputSampleRate: 44100
-)
-try resampler.initialize()
-```
-
-### Remove Trailing Silence
-
-```swift
-// Filter string: reverse → remove start silence → reverse back
-let filterString = "areverse,silenceremove=start_periods=1:start_threshold=0.001,areverse"
-```
-
-See `docs/AUDIO_PROCESSING.md` for complete implementation.
-
-## Common Codec IDs
-
-| Format | Codec ID |
-|--------|----------|
-| AAC (M4A) | `.AAC` |
-| MP3 | `.MP3` |
-| WAV | `.PCM_S16LE` |
-| AIFF | `.PCM_S16BE` |
-| FLAC | `.FLAC` |
-
-## Channel Layouts
-
-```swift
-AVChannelLayoutMono      // 1 channel
-AVChannelLayoutStereo    // 2 channels
-AVChannelLayout5Point1   // 6 channels (5.1)
-```
-
-## Sample Formats
-
-```swift
-.int16        // Signed 16-bit (CD quality)
-.float        // 32-bit float
-.floatPlanar  // Planar 32-bit float
-```
-
-## Key Directories
-
-- `Sources/SwiftFFmpeg/` - Library source
-- `Sources/Examples/` - Working examples
-- `docs/` - Extended documentation
-
-## Workflow
-
-- Work on `development` branch
-- PR to `main` (protected)
-- See `.claude/WORKFLOW.md` for details
